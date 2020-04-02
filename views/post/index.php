@@ -2,16 +2,12 @@
 
 use App\Model\Post;
 use App\Connection;
+use App\URL;
 
 $title = 'Mon Blog';
 $pdo = Connection::getPDO();
 
-$page = $_GET['page'] ?? 1;
-if (!filter_var($page, FILTER_VALIDATE_INT)) {
-    throw new Exception('Numéro de page invalide');
-}
-
-$currentPage = (int) $page;
+$currentPage = URL::getPositiveInt('page', 1);
 $count = (int) $pdo->query('SELECT COUNT(id) FROM post')->fetch(PDO::FETCH_NUM)[0];
 
 $perPage = 12;
