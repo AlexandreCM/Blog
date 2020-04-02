@@ -17,9 +17,9 @@
 
     <footer class="bg-light py-4 footer mt-auto">
         <div class="container">
-            <?php if (define('DEBUG_TIME')): ?>
+            <?php if (defined('DEBUG_TIME')): ?>
             Page générée en <?= round(1000 * (microtime(true) - DEBUG_TIME)) ?>ms
-            <?php endif; ?>
+            <?php endif ?>
         </div>
     </footer>
 </body>
