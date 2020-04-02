@@ -20,7 +20,7 @@ class Post {
 
     public function getName(): ?string
     {
-        return $this->name;
+        return htmlentities($this->name);
     }
 
     public function getSlug(): ?string
@@ -30,7 +30,7 @@ class Post {
 
     public function getContent(): ?string
     {
-        return $this->content;
+        return nl2br(htmlentities($this->content));
     }
 
     public function getExcerpt(): ?string
