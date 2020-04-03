@@ -1,36 +1,15 @@
 <?php
 
-use App\Model\Category;
-use App\Model\Post;
 use App\Connection;
-use App\PaginatedQuery;
+use App\Table\PostTable;
 
 $title = 'Mon Blog';
+
 $pdo = Connection::getPDO();
-$paginatedQuery = new PaginatedQuery(
-    "SELECT * FROM post ORDER BY created_at DESC",
-    "SELECT COUNT(id) FROM post"
-);
-/** @var Post[] $posts */
-$posts = $paginatedQuery->getItems(Post::class);
-
-$postsById = [];
-foreach ($posts as $post) {
-    $postsById[$post->getId()] = $post;
-}
-
-$categories = $pdo
-    ->query('SELECT c.*, pc.post_id 
-            FROM post_category pc 
-            JOIN category c ON c.id = pc.category_id 
-            WHERE pc.post_id IN (' . implode(',', array_keys($postsById)) . ');')
-    ->fetchAll(PDO::FETCH_CLASS, Category::class);
-
-foreach ($categories as $category) {
-    $postsById[$category->getPostId()]->addCategory($category);
-}
-
+$table = new PostTable($pdo);
+[$posts, $pagination] = $table->findPaginated();
 $link = $router->url('home');
+
 ?>
 <h1>Mon Blog</h1>
 
@@ -43,6 +22,6 @@ $link = $router->url('home');
 </div>
 
 <div class="d-flex justify-content-between my-4">
-    <?= $paginatedQuery->previousPage($link); ?>
-    <?= $paginatedQuery->nextPage($link); ?>
+    <?= $pagination->previousPage($link); ?>
+    <?= $pagination->nextPage($link); ?>
 </div>
