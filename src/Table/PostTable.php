@@ -4,7 +4,10 @@ namespace App\Table;
 use App\Model\Post;
 use App\PaginatedQuery;
 
-class PostTable extends Table {
+final class PostTable extends Table {
+
+    protected $table = "post";
+    protected $class = Post::class;
 
     public function findPaginated()
     {
