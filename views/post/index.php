@@ -1,5 +1,6 @@
 <?php
 
+use App\Model\Category;
 use App\Model\Post;
 use App\Connection;
 use App\PaginatedQuery;
@@ -12,8 +13,24 @@ $paginatedQuery = new PaginatedQuery(
 );
 /** @var Post[] $posts */
 $posts = $paginatedQuery->getItems(Post::class);
-$link = $router->url('home');
 
+$postsById = [];
+foreach ($posts as $post) {
+    $postsById[$post->getId()] = $post;
+}
+
+$categories = $pdo
+    ->query('SELECT c.*, pc.post_id 
+            FROM post_category pc 
+            JOIN category c ON c.id = pc.category_id 
+            WHERE pc.post_id IN (' . implode(',', array_keys($postsById)) . ');')
+    ->fetchAll(PDO::FETCH_CLASS, Category::class);
+
+foreach ($categories as $category) {
+    $postsById[$category->getPostId()]->addCategory($category);
+}
+
+$link = $router->url('home');
 ?>
 <h1>Mon Blog</h1>
 

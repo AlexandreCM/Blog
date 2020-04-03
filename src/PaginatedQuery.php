@@ -11,6 +11,7 @@ class PaginatedQuery {
     private $pdo;
     private $perPage;
     private $count;
+    private $items;
 
     public function __construct(string $query, string $queryCount, ?PDO $pdo = null, int $perPage = 12)
     {
@@ -37,15 +38,18 @@ class PaginatedQuery {
 
     public function getItems(string $classMapping): array
     {
-        $currentPage = $this->getCurrentPage();
-        $pages = $this->getPages();
-        if ($currentPage > $pages) {
-            throw new Exception('Cette page n\'existe pas');
+        if ($this->items === null) {
+            $currentPage = $this->getCurrentPage();
+            $pages = $this->getPages();
+            if ($currentPage > $pages) {
+                throw new Exception('Cette page n\'existe pas');
+            }
+            $offset = $this->perPage * ($currentPage - 1);
+            $this->items = $this->pdo
+                ->query($this->query . " LIMIT {$this->perPage} OFFSET $offset;")
+                ->fetchAll(PDO::FETCH_CLASS, $classMapping);
         }
-        $offset = $this->perPage * ($currentPage - 1);
-        return $this->pdo
-            ->query($this->query . " LIMIT {$this->perPage} OFFSET $offset;")
-            ->fetchAll(PDO::FETCH_CLASS, $classMapping);
+        return $this->items;
     }
 
     public function previousPage(string $link)
