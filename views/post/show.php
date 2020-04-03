@@ -1,6 +1,7 @@
 <?php
 
 use App\Connection;
+use App\Model\Post;
 use App\Table\CategoryTable;
 use App\Table\PostTable;
 
@@ -8,6 +9,7 @@ $id = (int) $params['id'];
 $slug = $params['slug'];
 
 $pdo = Connection::getPDO();
+/** @var Post $post */
 $post = (new PostTable($pdo))->find($id);
 (new CategoryTable($pdo))->hydratePosts([$post]);
 

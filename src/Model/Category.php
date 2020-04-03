@@ -3,11 +3,11 @@ namespace App\Model;
 
 class Category {
 
-    private $id;
-    private $slug;
-    private $name;
-    private $post_id;
-    private $post;
+    private int $id;
+    private string $slug;
+    private string $name;
+    private int $post_id;
+    private Post $post;
 
     public function getId(): ?int
     {

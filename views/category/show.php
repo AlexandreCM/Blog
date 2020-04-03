@@ -1,6 +1,8 @@
 <?php
 
 use App\Connection;
+use App\Model\Category;
+use App\Model\Post;
 use App\Table\CategoryTable;
 use App\Table\PostTable;
 
@@ -8,6 +10,7 @@ $id = (int) $params['id'];
 $slug = $params['slug'];
 
 $pdo = Connection::getPDO();
+/** @var Category $category */
 $category = (new CategoryTable($pdo))->find($id);
 
 if ($category->getSlug() !== $slug) {
@@ -18,6 +21,10 @@ if ($category->getSlug() !== $slug) {
 
 $title = "Catégorie {$category->getName()}";
 
+/**
+ * @var Post[] $posts
+ * @var string $pagination
+ */
 [$posts, $pagination] = ($table = new PostTable($pdo))->findPaginatedForCategory($category->getId());
 
 $link = $router->url('category', ['id' => $category->getId(), 'slug' => $category->getSlug()]);

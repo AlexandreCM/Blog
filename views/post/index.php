@@ -1,12 +1,17 @@
 <?php
 
 use App\Connection;
+use App\Model\Post;
 use App\Table\PostTable;
 
 $title = 'Mon Blog';
 
 $pdo = Connection::getPDO();
 $table = new PostTable($pdo);
+/**
+ * @var Post[] $posts
+ * @var string $pagination
+ */
 [$posts, $pagination] = $table->findPaginated();
 $link = $router->url('home');
 

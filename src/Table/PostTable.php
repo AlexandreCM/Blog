@@ -16,6 +16,7 @@ final class PostTable extends Table {
             "SELECT COUNT(id) FROM post",
             $this->pdo
         );
+        /** @var Post[] $posts */
         $posts = $paginatedQuery->getItems(Post::class);
         (new CategoryTable($this->pdo))->hydratePosts($posts);
         return [$posts, $paginatedQuery];
@@ -30,6 +31,7 @@ final class PostTable extends Table {
             ORDER BY created_at DESC",
             "SELECT COUNT(post_id) FROM post_category WHERE category_id = {$categoryId}"
         );
+        /** @var Post[] $posts */
         $posts = $paginatedQuery->getItems(Post::class);
         (new CategoryTable($this->pdo))->hydratePosts($posts);
         return [$posts, $paginatedQuery];
