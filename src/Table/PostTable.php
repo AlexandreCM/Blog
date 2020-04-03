@@ -1,19 +1,10 @@
 <?php
 namespace App\Table;
 
-use App\Model\Category;
 use App\Model\Post;
 use App\PaginatedQuery;
-use PDO;
 
-class PostTable {
-
-    private $pdo;
-
-    public function __construct(PDO $pdo)
-    {
-        $this->pdo = $pdo;
-    }
+class PostTable extends Table {
 
     public function findPaginated()
     {
@@ -22,24 +13,22 @@ class PostTable {
             "SELECT COUNT(id) FROM post",
             $this->pdo
         );
-        /** @var Post[] $posts */
         $posts = $paginatedQuery->getItems(Post::class);
+        (new CategoryTable($this->pdo))->hydratePosts($posts);
+        return [$posts, $paginatedQuery];
+    }
 
-        $postsById = [];
-        foreach ($posts as $post) {
-            $postsById[$post->getId()] = $post;
-        }
-
-        $categories = $this->pdo
-            ->query('SELECT c.*, pc.post_id 
-                    FROM post_category pc 
-                    JOIN category c ON c.id = pc.category_id 
-                    WHERE pc.post_id IN (' . implode(',', array_keys($postsById)) . ');')
-            ->fetchAll(PDO::FETCH_CLASS, Category::class);
-
-        foreach ($categories as $category) {
-            $postsById[$category->getPostId()]->addCategory($category);
-        }
+    public function findPaginatedForCategory(int $categoryId)
+    {
+        $paginatedQuery = new PaginatedQuery(
+            "SELECT p.* FROM post p
+            JOIN post_category pc ON pc.post_id = p.id
+            WHERE pc.category_id = {$categoryId}
+            ORDER BY created_at DESC",
+            "SELECT COUNT(post_id) FROM post_category WHERE category_id = {$categoryId}"
+        );
+        $posts = $paginatedQuery->getItems(Post::class);
+        (new CategoryTable($this->pdo))->hydratePosts($posts);
         return [$posts, $paginatedQuery];
     }
 
