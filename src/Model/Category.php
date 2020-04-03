@@ -1,7 +1,7 @@
 <?php
 namespace App\Model;
 
-class Categoriy {
+class Category {
 
     private $id;
     private $slug;
@@ -19,7 +19,7 @@ class Categoriy {
 
     public function getName(): ?string
     {
-        return $this->name;
+        return htmlentities($this->name);
     }
 
 

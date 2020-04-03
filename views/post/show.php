@@ -1,7 +1,7 @@
 <?php
 
 use App\Connection;
-use App\Model\Categoriy;
+use App\Model\Category;
 use App\Model\Post;
 
 $id = (int) $params['id'];
@@ -29,8 +29,8 @@ FROM post_category pc
 JOIN category c ON pc.category_id = c.id
 WHERE pc.post_id = :id');
 $query->execute(['id' => $post->getId()]);
-/** @var Categoriy[] $categories */
-$categories = $query->fetchAll(PDO::FETCH_CLASS, Categoriy::class);
+/** @var Category[] $categories */
+$categories = $query->fetchAll(PDO::FETCH_CLASS, Category::class);
 
 ?>
 
