@@ -1,13 +1,10 @@
 <?php
 
+use App\Auth;
 use App\Connection;
 use App\Table\PostTable;
 
-?>
-    <h1>Delete <?= $params['id'] ?></h1>
-
-<?php
-$title = "Administration";
+Auth::check();
 
 $pdo = Connection::getPDO();
 $table = new PostTable($pdo);

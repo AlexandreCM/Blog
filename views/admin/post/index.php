@@ -4,6 +4,8 @@ use App\Connection;
 use App\Model\Post;
 use App\Table\PostTable;
 
+Auth::check();
+
 $title = "Administration";
 $link = $router->url('admin_posts');
 
