@@ -22,7 +22,6 @@ class Post {
     {
         return htmlentities($this->name);
     }
-
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -33,12 +32,16 @@ class Post {
     {
         return $this->slug;
     }
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+        return $this;
+    }
 
     public function getContent(): ?string
     {
         return nl2br(htmlentities($this->content));
     }
-
     public function getExcerpt(): ?string
     {
         if ($this->content === null) {
@@ -46,7 +49,6 @@ class Post {
         }
         return Text::excerpt($this->content, 60);
     }
-
     public function setContent(string $content): self
     {
         $this->content = $content;
@@ -57,22 +59,22 @@ class Post {
     {
         return new DateTime($this->created_at);
     }
+    public function setCreatedAt(string $created_at): self
+    {
+        $this->created_at = $created_at;
+        return $this;
+    }
+
 
     /** @return Category[] */
     public function getCategories(): array
     {
         return $this->categories;
     }
-
     public function addCategory(Category $category): void
     {
         $this->categories[] = $category;
         $category->setPost($this);
     }
-
-
-
-
-
-
+    
 }

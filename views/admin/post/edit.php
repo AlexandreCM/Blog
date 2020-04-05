@@ -15,7 +15,11 @@ $success = false;
 $errors = [];
 
 if (!empty($_POST)) {
-    $post->setName($_POST['name']);
+    $post
+        ->setName($_POST['name'])
+        ->setContent($_POST['content'])
+        ->setSlug($_POST['slug'])
+        ->setCreatedAt($_POST['created_at']);
 
     Validator::lang('fr');
     $v = new Validator($_POST);
