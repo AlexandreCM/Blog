@@ -42,7 +42,7 @@ $pdo = Connection::getPDO();
                 <a href="<?= $router->url('admin_post', ['id' => $post->getId()]) ?>" class="btn btn-primary">
                     Editer
                 </a>
-                <form action="<?= $router->url('admin_post_delete', ['id' => $post->getId()]) ?>" method="post"
+                <form action="<?= $router->url('admin_post_delete', ['id' => $post->getId()]) ?>" method="POST"
                     onsubmit="return confirm('Supprimer ??')" style="display: inline">
                     <button type="submit" class="btn btn-danger">Supprimer</button>
                 </form>

@@ -23,6 +23,12 @@ class Post {
         return htmlentities($this->name);
     }
 
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+        return $this;
+    }
+
     public function getSlug(): ?string
     {
         return $this->slug;
@@ -39,6 +45,12 @@ class Post {
             return null;
         }
         return Text::excerpt($this->content, 60);
+    }
+
+    public function setContent(string $content): self
+    {
+        $this->content = $content;
+        return $this;
     }
 
     public function getCreatedAt(): DateTime

@@ -1,1 +1,58 @@
-<h1>Edit</h1>
+<?php
+
+use App\Connection;
+use App\Model\Post;
+use App\Table\PostTable;
+use App\Validator;
+
+$pdo = Connection::getPDO();
+$postTable = new PostTable($pdo);
+/** @var Post $post */
+$post = $postTable->find($params['id']);
+$success = false;
+
+$errors = [];
+
+if (!empty($_POST)) {
+    $post->setName($_POST['name']);
+
+    Validator::lang('fr');
+    $v = new Validator($_POST);
+    $v->rule('required', 'name');
+    $v->rule('lengthBetween', 'name', 3, 250);
+
+    if ($v->validate()) {
+        $postTable->update($post);
+        $success = true;
+    }
+    else {
+        $errors = $v->errors();
+    }
+}
+?>
+
+<?php if ($success): ?>
+    <div class="alert alert-success">
+        L'article a bien été modifié
+    </div>
+<?php endif ?>
+<?php if (!empty($errors)): ?>
+    <div class="alert alert-danger" >
+        L'article n'a pas pu etre modifié
+    </div>
+<?php endif ?>
+
+<h1>Editon de <?= $post->getName() ?></h1>
+
+<form action="" method="POST">
+    <div class="form-group">
+        <label for="name">Titre</label>
+        <input type="text" class="form-control <?= isset($errors['name']) ? 'is-invalid' : '' ?>" name="name" value="<?= $post->getName() ?>">
+        <?php if (isset($errors['name'])): ?>
+        <div class="invalid-feedback">
+            <?= implode('<br>', $errors['name']) ?>
+        </div>
+        <?php endif ?>
+    </div>
+    <button class="btn btn-primary">Modifier</button>
+</form>

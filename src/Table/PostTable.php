@@ -38,10 +38,22 @@ final class PostTable extends Table {
         return [$posts, $paginatedQuery];
     }
 
-    public function delete(int $id)
+    public function delete(int $id): void
     {
         $query = $this->pdo->prepare("DELETE FROM {$this->table} WHERE id = ?;");
         $result = $query->execute([$id]);
+        if (!$result) {
+            throw new Exception("Impossible de supprimer l'enregistrement #$id dans la table {$this->table}");
+        }
+    }
+
+    public function update(Post $post): void
+    {
+        $query = $this->pdo->prepare("UPDATE {$this->table} SET name = :name WHERE id = :id;");
+        $result = $query->execute([
+            'id' => $post->getId(),
+            'name' => $post->getName()
+        ]);
         if (!$result) {
             throw new Exception("Impossible de supprimer l'enregistrement #$id dans la table {$this->table}");
         }
