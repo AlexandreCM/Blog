@@ -1,5 +1,6 @@
 <?php
 
+use App\Auth;
 use App\Connection;
 use App\Model\Post;
 use App\Table\PostTable;
@@ -30,7 +31,7 @@ $pdo = Connection::getPDO();
         <th>Actions</th>
     </thead>
     <tbody>
-    <?php foreach ($posts as $post): ?>
+<?php foreach ($posts as $post): ?>
         <tr>
             <td>
                 <a href="<?= $router->url('admin_post', ['id' => $post->getId()]) ?>">
@@ -41,13 +42,13 @@ $pdo = Connection::getPDO();
                 <a href="<?= $router->url('admin_post', ['id' => $post->getId()]) ?>" class="btn btn-primary">
                     Editer
                 </a>
-                <a href="<?= $router->url('admin_post_delete', ['id' => $post->getId()]) ?>" class="btn btn-danger"
-                    onclick="return confirm('Supprimer ??')">
-                    Supprimer
-                </a>
+                <form action="<?= $router->url('admin_post_delete', ['id' => $post->getId()]) ?>" method="post"
+                    onsubmit="return confirm('Supprimer ??')" style="display: inline">
+                    <button type="submit" class="btn btn-danger">Supprimer</button>
+                </form>
             </td>
         </tr>
-    <?php endforeach ?>
+<?php endforeach ?>
     </tbody>
 </table>
 
