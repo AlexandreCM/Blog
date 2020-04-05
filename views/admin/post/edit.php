@@ -1,6 +1,7 @@
 <?php
 
 use App\Connection;
+use App\HTML\Form;
 use App\Model\Post;
 use App\Table\PostTable;
 use App\Validator;
@@ -18,8 +19,8 @@ if (!empty($_POST)) {
 
     Validator::lang('fr');
     $v = new Validator($_POST);
-    $v->rule('required', 'name');
-    $v->rule('lengthBetween', 'name', 3, 250);
+    $v->rule('required', ['name', 'slug']);
+    $v->rule('lengthBetween', ['name', 'slug'], 3, 250);
 
     if ($v->validate()) {
         $postTable->update($post);
@@ -29,6 +30,7 @@ if (!empty($_POST)) {
         $errors = $v->errors();
     }
 }
+$form = new Form($post, $errors);
 ?>
 
 <?php if ($success): ?>
@@ -45,14 +47,9 @@ if (!empty($_POST)) {
 <h1>Editon de <?= $post->getName() ?></h1>
 
 <form action="" method="POST">
-    <div class="form-group">
-        <label for="name">Titre</label>
-        <input type="text" class="form-control <?= isset($errors['name']) ? 'is-invalid' : '' ?>" name="name" value="<?= $post->getName() ?>">
-        <?php if (isset($errors['name'])): ?>
-        <div class="invalid-feedback">
-            <?= implode('<br>', $errors['name']) ?>
-        </div>
-        <?php endif ?>
-    </div>
+    <?= $form->input('name', 'Titre'); ?>
+    <?= $form->input('slug', 'URL'); ?>
+    <?= $form->textarea('content', 'Contenu'); ?>
+    <?= $form->input('created_at', 'Date'); ?>
     <button class="btn btn-primary">Modifier</button>
 </form>
