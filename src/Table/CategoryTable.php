@@ -70,4 +70,13 @@ final class CategoryTable extends Table {
         $category->setId($this->pdo->lastInsertId());
     }
 
+    public function delete(int $id): void
+    {
+        $query = $this->pdo->prepare("DELETE FROM {$this->table} WHERE id = ?;");
+        $result = $query->execute([$id]);
+        if (!$result) {
+            throw new Exception("Impossible de supprimer l'enregistrement #$id dans la table {$this->table}");
+        }
+    }
+
 }
