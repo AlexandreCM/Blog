@@ -5,6 +5,7 @@ use App\HTML\Form;
 use App\Model\Post;
 use App\Table\PostTable;
 use App\Validator;
+use App\Validators\PostValidator;
 
 $pdo = Connection::getPDO();
 $postTable = new PostTable($pdo);
@@ -21,17 +22,14 @@ if (!empty($_POST)) {
         ->setSlug($_POST['slug'])
         ->setCreatedAt($_POST['created_at']);
 
-    Validator::lang('fr');
-    $v = new Validator($_POST);
-    $v->rule('required', ['name', 'slug']);
-    $v->rule('lengthBetween', ['name', 'slug'], 3, 250);
+    $v = new PostValidator($_POST, $postTable, $post->getId());
 
     if ($v->validate()) {
         $postTable->update($post);
         $success = true;
     }
     else {
-        $errors = $v->errors();
+        $errors = $v->getErrors();
     }
 }
 $form = new Form($post, $errors);

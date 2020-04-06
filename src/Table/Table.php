@@ -34,4 +34,17 @@ abstract class Table {
         return $result;
     }
 
+    public function hasThisDataInTable(string $field, $value, ?int $except = null): bool
+    {
+        $sql = "SELECT COUNT(id) FROM {$this->table} WHERE $field = ?";
+        $sqlParams = [$value];
+        if ($except !== null) {
+            $sql .= " AND id != ?";
+            $sqlParams[] = $except;
+        }
+        $query = $this->pdo->prepare($sql);
+        $query->execute($sqlParams);
+        return (int) $query->fetch(PDO::FETCH_NUM)[0] > 0;
+    }
+
 }
