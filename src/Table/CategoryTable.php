@@ -57,4 +57,17 @@ final class CategoryTable extends Table {
         }
     }
 
+    public function create(Category $category)
+    {
+        $query = $this->pdo->prepare("INSERT INTO {$this->table} SET name = :name, slug = :slug;");
+        $result = $query->execute([
+            'name' => $category->getName(),
+            'slug' => $category->getSlug(),
+        ]);
+        if (!$result) {
+            throw new Exception("Impossible de creer l'enregistrement dans la table {$this->table}");
+        }
+        $category->setId($this->pdo->lastInsertId());
+    }
+
 }

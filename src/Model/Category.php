@@ -3,9 +3,9 @@ namespace App\Model;
 
 class Category {
 
-    private int $id;
-    private string $slug;
-    private string $name;
+    private $id;
+    private $slug;
+    private $name;
     private int $post_id;
     private Post $post;
 
