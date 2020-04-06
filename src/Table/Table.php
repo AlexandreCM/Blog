@@ -34,6 +34,49 @@ abstract class Table {
         return $result;
     }
 
+    public function findAll()
+    {
+        $sql = "SELECT * FROM {$this->table}";
+        return $this->pdo->query($sql)->fetchAll(PDO::FETCH_CLASS, $this->class);
+    }
+
+    protected function createTable(array $data): int
+    {
+        $sqlFields = [];
+        foreach ($data as $key => $value) {
+            $sqlFields[] = "$key = :$key";
+        }
+        $query = $this->pdo->prepare("INSERT INTO {$this->table} SET " . implode(', ', $sqlFields));
+        $result = $query->execute($data);
+        if (!$result) {
+            throw new Exception("Impossible de creer l'enregistrement dans la table {$this->table}");
+        }
+        return (int) $this->pdo->lastInsertId();
+    }
+
+    protected function updateTable(array $data, int $id): void
+    {
+        $sqlFields = [];
+        foreach ($data as $key => $value) {
+            $sqlFields[] = "$key = :$key";
+        }
+        $sql = "UPDATE {$this->table} SET " . implode(', ', $sqlFields) . " WHERE id = :id";
+        $query = $this->pdo->prepare($sql);
+        $result = $query->execute(array_merge($data, ['id' => $id]));
+        if (!$result) {
+            throw new Exception("Impossible de modifier l'enregistrement dans la table {$this->table}");
+        }
+    }
+
+    public function delete(int $id): void
+    {
+        $query = $this->pdo->prepare("DELETE FROM {$this->table} WHERE id = ?;");
+        $result = $query->execute([$id]);
+        if (!$result) {
+            throw new Exception("Impossible de supprimer l'enregistrement #$id dans la table {$this->table}");
+        }
+    }
+
     public function hasThisDataInTable(string $field, $value, ?int $except = null): bool
     {
         $sql = "SELECT COUNT(id) FROM {$this->table} WHERE $field = ?";

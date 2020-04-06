@@ -11,11 +11,8 @@ $title = "Categories";
 $link = $router->url('admin_category');
 
 $pdo = Connection::getPDO();
-/**
- * @var Category[] $categories
- * @var string $pagination
- */
-[$categories, $pagination] = (new CategoryTable($pdo))->findPaginated();
+/** @var Category[] $categories $categories */
+$categories = (new CategoryTable($pdo))->findAll();
 
 ?>
 
@@ -28,6 +25,7 @@ $pdo = Connection::getPDO();
 <table class="table">
     <thead>
         <th>Titre</th>
+        <th>URL</th>
         <th>
             <a href="<?= $router->url('admin_category_new') ?>" class="btn btn-primary">Nouveau</a>
         </th>
@@ -40,6 +38,7 @@ $pdo = Connection::getPDO();
                     <?= htmlentities($category->getName()) ?>
                 </a>
             </td>
+            <td><?= $category->getSlug() ?></td>
             <td>
                 <a href="<?= $router->url('admin_category', ['id' => $category->getId()]) ?>" class="btn btn-primary">
                     Editer
@@ -53,8 +52,3 @@ $pdo = Connection::getPDO();
 <?php endforeach ?>
     </tbody>
 </table>
-
-<div class="d-flex justify-content-between my-4">
-    <?= $pagination->previousPage($link); ?>
-    <?= $pagination->nextPage($link); ?>
-</div>

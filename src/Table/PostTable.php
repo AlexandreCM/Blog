@@ -38,43 +38,26 @@ final class PostTable extends Table {
         return [$posts, $paginatedQuery];
     }
 
-    public function delete(int $id): void
-    {
-        $query = $this->pdo->prepare("DELETE FROM {$this->table} WHERE id = ?;");
-        $result = $query->execute([$id]);
-        if (!$result) {
-            throw new Exception("Impossible de supprimer l'enregistrement #$id dans la table {$this->table}");
-        }
-    }
-
     public function update(Post $post): void
     {
-        $query = $this->pdo->prepare("UPDATE {$this->table} SET name = :name, slug = :slug, content = :content, created_at = :created_at WHERE id = :id;");
-        $result = $query->execute([
+        $this->updateTable([
             'id' => $post->getId(),
             'name' => $post->getName(),
             'slug' => $post->getSlug(),
             'content' => $post->getContent(),
             'created_at' => $post->getCreatedAt()->format('Y-m-d H:i:s')
-        ]);
-        if (!$result) {
-            throw new Exception("Impossible de modifier l'enregistrement #$id dans la table {$this->table}");
-        }
+        ], $post->getId());
     }
 
     public function create(Post $post): void
     {
-        $query = $this->pdo->prepare("INSERT INTO {$this->table} SET name = :name, slug = :slug, content = :content, created_at = :created_at;");
-        $result = $query->execute([
+        $id = $this->createTable([
             'name' => $post->getName(),
             'slug' => $post->getSlug(),
             'content' => $post->getContent(),
             'created_at' => $post->getCreatedAt()->format('Y-m-d H:i:s')
         ]);
-        if (!$result) {
-            throw new Exception("Impossible de creer l'enregistrement dans la table {$this->table}");
-        }
-        $post->setId($this->pdo->lastInsertId());
+        $post->setId($id);
     }
 
 }

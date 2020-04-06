@@ -3,7 +3,6 @@ namespace App\Table;
 
 use App\Model\Category;
 use App\Model\Post;
-use App\PaginatedQuery;
 use PDO;
 
 final class CategoryTable extends Table {
@@ -31,52 +30,22 @@ final class CategoryTable extends Table {
         }
     }
 
-    public function findPaginated()
+    public function create(Category $category): void
     {
-        $paginatedQuery = new PaginatedQuery(
-            "SELECT * FROM {$this->table}",
-            "SELECT COUNT(id) FROM {$this->table}",
-            $this->pdo
-        );
-        /** @var Category[] $categories */
-        $categories = $paginatedQuery->getItems($this->class);
-//        (new CategoryTable($this->pdo))->hydratePosts($categories);
-        return [$categories, $paginatedQuery];
+        $id = $this->createTable([
+            'name' => $category->getName(),
+            'slug' => $category->getSlug(),
+        ]);
+        $category->setId($id);
     }
 
     public function update(Category $category): void
     {
-        $query = $this->pdo->prepare("UPDATE {$this->table} SET name = :name, slug = :slug WHERE id = :id;");
-        $result = $query->execute([
+        $this->updateTable([
             'id' => $category->getId(),
             'name' => $category->getName(),
-            'slug' => $category->getSlug(),
-        ]);
-        if (!$result) {
-            throw new Exception("Impossible de modifier l'enregistrement #$id dans la table {$this->table}");
-        }
-    }
-
-    public function create(Category $category)
-    {
-        $query = $this->pdo->prepare("INSERT INTO {$this->table} SET name = :name, slug = :slug;");
-        $result = $query->execute([
-            'name' => $category->getName(),
-            'slug' => $category->getSlug(),
-        ]);
-        if (!$result) {
-            throw new Exception("Impossible de creer l'enregistrement dans la table {$this->table}");
-        }
-        $category->setId($this->pdo->lastInsertId());
-    }
-
-    public function delete(int $id): void
-    {
-        $query = $this->pdo->prepare("DELETE FROM {$this->table} WHERE id = ?;");
-        $result = $query->execute([$id]);
-        if (!$result) {
-            throw new Exception("Impossible de supprimer l'enregistrement #$id dans la table {$this->table}");
-        }
+            'slug' => $category->getSlug()
+        ], $category->getId());
     }
 
 }

@@ -16,7 +16,7 @@ if (!empty($_POST)) {
 
     ObjectHelper::hydrate($category, $_POST);
 
-    $v = new CategoryValidator($_POST, $categoryTable, $category->getId());
+    $v = new CategoryValidator($_POST, $categoryTable);
     if ($v->validate()) {
         $categoryTable->create($category);
         header('Location: ' . $router->url('admin_category', ['id' => $category->getId()]) . '?created=1');
