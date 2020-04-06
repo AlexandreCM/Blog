@@ -31,4 +31,5 @@ $router
     ->match('/admin/post/new', '/admin/post/new', 'admin_post_new')
 
     ->get('/admin/categories', '/admin/category/index', 'admin_categories')
+    ->match('/admin/category/[i:id]', '/admin/category/edit', 'admin_category')
     ->run();

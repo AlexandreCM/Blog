@@ -44,4 +44,17 @@ final class CategoryTable extends Table {
         return [$categories, $paginatedQuery];
     }
 
+    public function update(Category $category): void
+    {
+        $query = $this->pdo->prepare("UPDATE {$this->table} SET name = :name, slug = :slug WHERE id = :id;");
+        $result = $query->execute([
+            'id' => $category->getId(),
+            'name' => $category->getName(),
+            'slug' => $category->getSlug(),
+        ]);
+        if (!$result) {
+            throw new Exception("Impossible de modifier l'enregistrement #$id dans la table {$this->table}");
+        }
+    }
+
 }
