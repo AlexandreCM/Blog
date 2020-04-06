@@ -3,6 +3,7 @@ namespace App\Table;
 
 use App\Model\Category;
 use App\Model\Post;
+use App\PaginatedQuery;
 use PDO;
 
 final class CategoryTable extends Table {
@@ -28,6 +29,19 @@ final class CategoryTable extends Table {
         foreach ($categories as $category) {
             $postsById[$category->getPostId()]->addCategory($category);
         }
+    }
+
+    public function findPaginated()
+    {
+        $paginatedQuery = new PaginatedQuery(
+            "SELECT * FROM {$this->table}",
+            "SELECT COUNT(id) FROM {$this->table}",
+            $this->pdo
+        );
+        /** @var Category[] $categories */
+        $categories = $paginatedQuery->getItems($this->class);
+//        (new CategoryTable($this->pdo))->hydratePosts($categories);
+        return [$categories, $paginatedQuery];
     }
 
 }

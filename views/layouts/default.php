@@ -9,7 +9,8 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <a href="/" class="navbar-brand">Mon site</a>
-        <a href="/admin" class="navbar-brand">Admin</a>
+        <a href="/admin/posts" class="navbar-brand">Posts</a>
+        <a href="/admin/categories" class="navbar-brand">Categories</a>
     </nav>
 
     <div class="container mt-4">
