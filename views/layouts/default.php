@@ -8,9 +8,17 @@
 <body class="d-flex flex-column h-100">
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <a href="/" class="navbar-brand">Mon site</a>
-        <a href="/admin/posts" class="navbar-brand">Posts</a>
-        <a href="/admin/categories" class="navbar-brand">Categories</a>
+        <a href="<?= $router->url('home') ?>" class="navbar-brand">Mon site</a>
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a href="<?= $router->url('admin_posts') ?>" class="nav-link">Posts</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a href="<?= $router->url('admin_categories') ?>" class="nav-link">Categories</a>
+            </li>
+        </ul>
     </nav>
 
     <div class="container mt-4">
