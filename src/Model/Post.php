@@ -6,17 +6,23 @@ use DateTime;
 
 class Post {
 
-    private int $id;
-    private string $name;
-    private string $slug;
-    private string $content;
-    private string $created_at;
+    private $id;
+    private $name;
+    private $slug;
+    private $content;
+    private $created_at;
     private array $categories = [];
 
     public function getId(): ?int
     {
         return $this->id;
     }
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+        return $this;
+    }
+
 
     public function getName(): ?string
     {

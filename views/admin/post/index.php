@@ -28,7 +28,9 @@ $pdo = Connection::getPDO();
 <table class="table">
     <thead>
         <th>Titre</th>
-        <th>Actions</th>
+        <th>
+            <a href="<?= $router->url('admin_post_new') ?>" class="btn btn-primary">Nouveau</a>
+        </th>
     </thead>
     <tbody>
 <?php foreach ($posts as $post): ?>
