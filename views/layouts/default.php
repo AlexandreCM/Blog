@@ -13,10 +13,13 @@
             <li class="nav-item">
                 <a href="<?= $router->url('admin_posts') ?>" class="nav-link">Posts</a>
             </li>
-        </ul>
-        <ul class="navbar-nav">
             <li class="nav-item">
                 <a href="<?= $router->url('admin_categories') ?>" class="nav-link">Categories</a>
+            </li>
+            <li class="nav-item">
+                <form action="<?= $router->url('logout') ?>" method="POST" style="display: inline">
+                    <button type="submit" class="nav-link" style="background: transparent; border: none;">Se deconnecter</button>
+                </form>
             </li>
         </ul>
     </nav>
