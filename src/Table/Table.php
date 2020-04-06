@@ -34,7 +34,7 @@ abstract class Table {
         return $result;
     }
 
-    public function findAll()
+    public function findAll(): array
     {
         $sql = "SELECT * FROM {$this->table}";
         return $this->pdo->query($sql)->fetchAll(PDO::FETCH_CLASS, $this->class);
