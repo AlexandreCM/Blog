@@ -40,8 +40,13 @@ class Router {
     public function run(): self
     {
         $match = $this->router->match();
-        $view = $match['target'];
-        $params = $match['params'];
+        if ($match) {
+            $view = $match['target'];
+            $params = $match['params'];
+        }
+        else {
+            $view = '/e404';
+        }
         $router = $this;
         if (session_status() === PHP_SESSION_NONE) session_start();
         $isAdmin = isset($_SESSION['auth']);
