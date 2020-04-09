@@ -1,11 +1,14 @@
 <?php
 
+use App\Auth;
 use App\Connection;
 use App\HTML\Form;
 use App\Model\Post;
 use App\ObjectHelper;
 use App\Table\PostTable;
 use App\Validators\PostValidator;
+
+Auth::check();
 
 $pdo = Connection::getPDO();
 $postTable = new PostTable($pdo);

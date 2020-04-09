@@ -1,11 +1,14 @@
 <?php
 
+use App\Auth;
 use App\Connection;
 use App\HTML\Form;
 use App\Model\Category;
 use App\ObjectHelper;
 use App\Table\CategoryTable;
 use App\Validators\CategoryValidator;
+
+Auth::check();
 
 $pdo = Connection::getPDO();
 $categoryTable = new CategoryTable($pdo);
