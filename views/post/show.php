@@ -26,4 +26,4 @@ if ($post->getSlug() !== $slug) {
 <?php foreach ($post->getCategories() as $category): ?>
 <a href="<?= $router->url('category', ['id' => $category->getId(), 'slug' => $category->getSlug()]) ?>"><?= $category->getName() ?></a>
 <?php endforeach ?>
-<p><?= $post->getContent() ?></p>
+<p><?= nl2br($post->getContent()) ?></p>

@@ -37,7 +37,7 @@ $pdo = Connection::getPDO();
         <tr>
             <td>
                 <a href="<?= $router->url('admin_post', ['id' => $post->getId()]) ?>">
-                    <?= htmlentities($post->getName()) ?>
+                    <?= $post->getName() ?>
                 </a>
             </td>
             <td>

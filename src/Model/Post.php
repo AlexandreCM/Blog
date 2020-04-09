@@ -46,7 +46,7 @@ class Post {
 
     public function getContent(): ?string
     {
-        return nl2br(htmlentities($this->content));
+        return $this->content;
     }
     public function getExcerpt(): ?string
     {

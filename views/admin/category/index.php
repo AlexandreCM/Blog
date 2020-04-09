@@ -35,7 +35,7 @@ $categories = (new CategoryTable($pdo))->findAll();
         <tr>
             <td>
                 <a href="<?= $router->url('admin_category', ['id' => $category->getId()]) ?>">
-                    <?= htmlentities($category->getName()) ?>
+                    <?= $category->getName() ?>
                 </a>
             </td>
             <td><?= $category->getSlug() ?></td>
