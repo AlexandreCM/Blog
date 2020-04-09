@@ -43,7 +43,8 @@ class Router {
         $view = $match['target'];
         $params = $match['params'];
         $router = $this;
-        $isAdmin = strpos($view, 'admin/') !== false;
+        if (session_status() === PHP_SESSION_NONE) session_start();
+        $isAdmin = isset($_SESSION['auth']);
         $layout = $isAdmin ? '/admin/layouts/default' : '/layouts/default';
         try {
             ob_start();

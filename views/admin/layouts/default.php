@@ -17,9 +17,13 @@
                 <a href="<?= $router->url('admin_categories') ?>" class="nav-link">Categories</a>
             </li>
             <li class="nav-item">
-                <form action="<?= $router->url('logout') ?>" method="POST" style="display: inline">
-                    <button type="submit" class="nav-link" style="background: transparent; border: none;">Se deconnecter</button>
-                </form>
+                <?php if (session_status() === PHP_SESSION_ACTIVE && isset($_SESSION['auth'])): ?>
+                    <form action="<?= $router->url('logout') ?>" method="POST" style="display: inline">
+                        <button type="submit" class="nav-link" style="background: transparent; border: none;">Se deconnecter</button>
+                    </form>
+                <?php else : ?>
+                    <a href="<?= $router->url('login') ?>" class="nav-link">Se connecter</a>
+                <?php endif ?>
             </li>
         </ul>
     </nav>

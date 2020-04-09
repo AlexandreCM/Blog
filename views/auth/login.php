@@ -18,7 +18,6 @@ if (!empty($_POST)) {
         try {
             $u = $userTable->findByUsername($user->getUsername());
             if(password_verify($_POST['password'], $u->getPassword())) {
-                session_start();
                 $_SESSION['auth'] = $u->getId();
                 header('Location: ' . $router->url('admin_posts'));
                 exit();
