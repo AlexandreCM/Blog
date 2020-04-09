@@ -16,6 +16,8 @@
             <li class="nav-item">
                 <a href="<?= $router->url('admin_categories') ?>" class="nav-link">Categories</a>
             </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
             <li class="nav-item">
                 <?php if (session_status() === PHP_SESSION_ACTIVE && isset($_SESSION['auth'])): ?>
                     <form action="<?= $router->url('logout') ?>" method="POST" style="display: inline">
